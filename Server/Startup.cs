@@ -1,8 +1,10 @@
+using Lamar;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShopEvent.Services;
 
 namespace ShopEvent.Server
 {
@@ -11,9 +13,11 @@ namespace ShopEvent.Server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Container = Container.For<ApplicationRegistry>();
         }
 
         public IConfiguration Configuration { get; }
+        public Container Container { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -26,6 +30,8 @@ namespace ShopEvent.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            EventDispatcher.Instance.Configure(Container);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -1,7 +1,4 @@
-﻿using ShopEvent.Services.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ShopEvent.Events;
 
 namespace ShopEvent.Services.EventHandlers
 {

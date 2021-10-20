@@ -6,11 +6,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.1" />
+    <PackageReference Include="Lamar" Version="4.2.1" />
+    <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="4.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Client\ShopEvent.Client.csproj" />
+    <ProjectReference Include="..\ShopEvent.Data\ShopEvent.Data.csproj" />
+    <ProjectReference Include="..\ShopEvent.Domain.Models\ShopEvent.Domain.Models.csproj" />
     <ProjectReference Include="..\ShopEvent.Domain\ShopEvent.Domain.csproj" />
+    <ProjectReference Include="..\ShopEvent.Services\ShopEvent.Services.csproj" />
   </ItemGroup>
 
 

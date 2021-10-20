@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace ShopEvent.Services.Events
+namespace ShopEvent.Events
 {
     public class ActivateMembershipEvent : IEvent
     {
