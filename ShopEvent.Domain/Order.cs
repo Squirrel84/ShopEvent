@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ShopEvent.Domain
 {
     public class Order
     {
-        public int OrderId { get; set; }
+        public Guid OrderId { get; set; }
 
         public string OrderReference { get; set; }
 

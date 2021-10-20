@@ -1,10 +1,10 @@
-@page "/fetchdata"
+@page "/products"
 @using ShopEvent.Domain
+@using System.Text; 
+@using System.Text.Json;
 @inject HttpClient Http
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
+<h1>Products</h1>
 
 @if (products == null)
 {
@@ -15,20 +15,21 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>SKU</th>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Price</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var product in products)
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td>@product.ProductSKU</td>
+                    <td>@product.ProductTitle</td>
+                    <td>@product.ProductType</td>
+                    <td>@product.Price</td>
+                    <td><button class="btn btn-primary" @onclick="() => Buy(product)">Buy me</button></td>
                 </tr>
             }
         </tbody>
@@ -36,11 +37,21 @@ else
 }
 
 @code {
-    private Product[] products;
+    private List<Product> products;
 
     protected override async Task OnInitializedAsync()
     {
-        products = await Http.GetFromJsonAsync<Product[]>("Product");
+        products = await Http.GetFromJsonAsync<List<Product>>("Product");
     }
 
+    private async Task Buy(Product product)
+    {
+        var postRequest = new HttpRequestMessage(HttpMethod.Post, "Product");
+
+        var postBody = new { ProductId = product.ProductId };
+
+        postRequest.Content = new StringContent(JsonSerializer.Serialize(postBody), Encoding.UTF8, "application/json");
+
+        var response = await Http.SendAsync(postRequest);
+    }
 }

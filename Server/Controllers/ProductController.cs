@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using ShopEvent.Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 
 namespace ShopEvent.Server.Controllers
 {
@@ -11,25 +11,57 @@ namespace ShopEvent.Server.Controllers
     [Route("[controller]")]
     public class ProductController : ControllerBase
     {
+        private string[] letters = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K" };
+
         private readonly ILogger<ProductController> logger;
 
-        public ProductController(ILogger<ProductController> logger)
+        public IProductRepository ProductRepository { get; }
+
+        public ProductController(ILogger<ProductController> logger, IProductRepository productRepository)
         {
             this.logger = logger;
+            this.ProductRepository = productRepository;
         }
 
         [HttpGet]
         public IEnumerable<Product> Get()
         {
-            var rng = new Random();
+            this.ProductRepository.GetTopSellingProducts(20);
 
-            Product product = new Product()
+            var random = new Random(DateTime.UtcNow.Second);
 
-            return Enumerable.Range(1, 5).Select(index => new Product
+            List<Product> products = new List<Product>();
+
+            for (int x = 1; x < 20; x++)
             {
+                StringBuilder sbSkuCode = new StringBuilder();
+                for (int c = 0; c < 5; c++)
+                {
+                    sbSkuCode.Append(letters[random.Next(0, 10)]);
+                }
 
-            })
-            .ToArray();
+                for (int c = 0; c < 5; c++)
+                {
+                    sbSkuCode.Append(random.Next(0, 9));
+                }
+
+                var productTypeNumber = random.Next(0, Enum.GetNames(typeof(ProductType)).Length);
+
+                ProductType productType = (ProductType)productTypeNumber;
+
+                Product product = new Product(sbSkuCode.ToString(), $"Product {productType} {x}", productType, random.Next(1, 99));
+
+                products.Add(product);
+            }
+
+            return products;
         }
+
+        [HttpPost]
+        public void Buy(Guid productId)
+        {
+            
+        }
+        
     }
 }
