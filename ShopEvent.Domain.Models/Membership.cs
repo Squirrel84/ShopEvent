@@ -9,7 +9,7 @@ namespace ShopEvent.Domain
 
         public void Activate()
         {
-            throw new NotImplementedException();
+            IsActive = true;
         }
     }
 }

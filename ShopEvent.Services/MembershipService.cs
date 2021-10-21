@@ -11,8 +11,9 @@ namespace ShopEvent.Services
     {
         private readonly ILogger<MembershipService> logger;
 
-        public MembershipService(IMembershipRepository membershipRepository)
+        public MembershipService(ILogger<MembershipService> logger, IMembershipRepository membershipRepository)
         {
+            this.logger = logger;
             MembershipRepository = membershipRepository;
         }
 
@@ -25,6 +26,7 @@ namespace ShopEvent.Services
             if (membership.IsActive)
             {
                 logger.LogWarning($"Membership [{membership.MembershipId}] is already active. Noting to do here.");
+                return;
             }
 
             membership.Activate();
